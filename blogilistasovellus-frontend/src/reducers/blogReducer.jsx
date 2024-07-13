@@ -11,11 +11,25 @@ const blogReducer = createSlice({
     add(state, action) {
       return state.concat(action.payload);
     },
-    update(state, action) {},
+    del(state, action) {
+      let temp = [...state];
+      temp = temp.filter((b) => b.id !== action.payload);
+
+      return [...temp];
+    },
+    like(state, action) {
+      let temp = [...state];
+      temp = temp.map((b) =>
+        b.id === action.payload.id ? { ...b, likes: action.payload.likes } : b,
+      );
+      temp = temp.sort((a, b) => a.likes < b.likes);
+
+      return [...temp];
+    },
   },
 });
 
-export const { set, add } = blogReducer.actions;
+export const { set, add, del, like } = blogReducer.actions;
 
 export const initializeBlogs = (blogs) => {
   return async (dispatch) => {
@@ -41,6 +55,21 @@ export const addBlog = ({ title, author, url }) => {
     };
 
     dispatch(add(blog));
+  };
+};
+
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    await blogService.deleteBlog(id);
+    dispatch(del(id));
+  };
+};
+
+export const likeBlog = (id, likes) => {
+  return async (dispatch) => {
+    await blogService.likeBlog(id, likes);
+
+    dispatch(like({ id, likes }));
   };
 };
 

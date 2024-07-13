@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import Blog from "./Blog";
 import CreateView from "./CreateView";
 import blogService from "../services/blogs";
-import blogReducer, { initializeBlogs, addBlog } from "../reducers/blogReducer";
+import blogReducer, {
+  initializeBlogs,
+  addBlog,
+  deleteBlog,
+  likeBlog
+} from "../reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const BlogView = () => {
@@ -24,20 +29,11 @@ const BlogView = () => {
   };
 
   const handleDeleteBlog = async (id) => {
-    await blogService.deleteBlog(id);
-
-    let temp = [...blogs];
-    temp = temp.filter((b) => b.id !== id);
-
-    setBlogs(temp);
+    dispatch(deleteBlog(id));
   };
 
   const handleLikeBlog = async (id, likes) => {
-    await blogService.likeBlog(id, likes);
-    let temp = [...blogs];
-    temp[temp.findIndex((b) => b.id === id)].likes = likes;
-    temp = temp.sort(blogSorterFunction);
-    setBlogs(temp);
+    dispatch(likeBlog(id, likes));
   };
 
   return (
