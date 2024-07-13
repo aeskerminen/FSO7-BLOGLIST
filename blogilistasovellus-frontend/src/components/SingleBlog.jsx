@@ -9,15 +9,25 @@ const SingleBlog = (props) => {
   const dispatch = useDispatch();
 
   const [blog, setBlog] = useState(null);
+
+  const [commentInput, setCommentInput] = useState("");
+
   const get = async () => {
     const res = await blogService.getBlog(id);
     setBlog(res);
   };
+
   useEffect(() => {
     get();
   }, []);
 
-  console.log(blog);
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+
+    blogService.commentBlog(blog.id, commentInput);
+    setBlog({ ...blog, comments: [...blog.comments, commentInput] });
+    setCommentInput("");
+  };
 
   if (blog === null) return null;
 
@@ -32,14 +42,32 @@ const SingleBlog = (props) => {
           <p style={{ display: "inline" }}>{blog.likes} likes</p>
           <button
             onClick={async () => {
-              await dispatch(likeBlog(id, blog.likes + 1));
-              await get();
+              dispatch(likeBlog(id, blog.likes + 1));
+              setBlog({ ...blog, likes: blog.likes + 1 });
             }}
           >
             Like
           </button>
         </div>
         <p>Added by {blog.user.name}</p>
+
+        <h3>Comments</h3>
+        <form onSubmit={handleAddComment}>
+          <input
+            type="text"
+            name="comment"
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+          ></input>
+          <button type="submit">add comment</button>
+        </form>
+        <div>
+          <ul>
+            {blog.comments.map((c, i) => {
+              return <li key={i}>{c}</li>;
+            })}
+          </ul>
+        </div>
       </div>
     </div>
   );
