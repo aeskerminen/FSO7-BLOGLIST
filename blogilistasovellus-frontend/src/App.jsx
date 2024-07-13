@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, loginUser } from "./reducers/userReducer";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Users from "./components/Users";
+import User from "./components/User";
 
 const Header = () => {
   const [username, setUsername] = useState("");
@@ -87,8 +88,12 @@ const App = () => {
         },
         {
           path: "/users",
-          element: <Users></Users>
-        }
+          element: user === null ? null : <Users></Users>,
+        },
+        {
+          path: "/users/:id",
+          element: user === null ? null : <User></User>,
+        },
       ],
     },
   ]);

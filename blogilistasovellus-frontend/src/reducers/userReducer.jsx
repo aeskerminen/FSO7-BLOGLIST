@@ -7,7 +7,8 @@ const blogReducer = createSlice({
   name: "user",
   initialState: () => {
     const u = JSON.parse(window.localStorage.getItem("loggedInUser"));
-    blogService.setToken(u.token);
+    if(u !== null)
+      blogService.setToken(u.token);
     return u;
   },
   reducers: {
