@@ -9,6 +9,22 @@ blogsRouter.get("/", async (request, response) => {
   return response.json(blogs);
 });
 
+blogsRouter.get("/:id", async (request, response) => {
+  const id = request.params.id
+  const blog = await Blog.findById(id).populate('user', 'username name id')
+  return response.json(blog);
+});
+
+blogsRouter.post("/:id/comments", async (request, response) => {
+
+  const id = request.params.id
+  const body = request.body
+  console.log(id, body)
+
+  const blog = await Blog.findByIdAndUpdate(id, {$push: {comments: body.comment}}, {new: true})
+  return blog
+})
+
 blogsRouter.post("/", async (request, response) => {
   let body = request.body
   if (body.url == undefined || body.title == undefined)

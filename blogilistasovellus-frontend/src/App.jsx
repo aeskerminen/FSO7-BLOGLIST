@@ -91,6 +91,7 @@ const App = () => {
       element: (
         <div>
           <Header></Header>
+          <div className="h-1 w-full bg-black rounded-full mt-4 mb-4"></div>
           <Outlet></Outlet>
         </div>
       ),
