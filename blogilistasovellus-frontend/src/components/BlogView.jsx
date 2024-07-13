@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import Blog from "./Blog";
 import CreateView from "./CreateView";
-import blogService from "../services/blogs";
-import blogReducer, {
+import {
   initializeBlogs,
   addBlog,
   deleteBlog,
-  likeBlog
+  likeBlog,
 } from "../reducers/blogReducer";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,8 +16,6 @@ const BlogView = () => {
 
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
-
-  const blogSorterFunction = (a, b) => a.likes < b.likes;
 
   useEffect(() => {
     dispatch(initializeBlogs());

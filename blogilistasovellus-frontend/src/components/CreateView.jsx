@@ -1,6 +1,4 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
-import Notification from "./Notification";
 import PropTypes from "prop-types";
 
 import { useDispatch } from "react-redux";
