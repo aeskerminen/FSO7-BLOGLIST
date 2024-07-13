@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const Blog = (props) => {
   const [showAll, setShowAll] = useState(false);
@@ -17,7 +18,7 @@ const Blog = (props) => {
       }}
     >
       <p data-testid="titleParagraph" style={{ display: "inline" }}>
-        {props.blog.title}
+        <Link to={`/blogs/${props.blog.id}`}>{props.blog.title}</Link>
       </p>
       <p style={{ display: "inline" }}> {props.blog.author}</p>
       <button onClick={() => setShowAll(!showAll)}>

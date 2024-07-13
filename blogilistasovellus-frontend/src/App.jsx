@@ -7,6 +7,7 @@ import { logoutUser, loginUser } from "./reducers/userReducer";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Users from "./components/Users";
 import User from "./components/User";
+import SingleBlog from "./components/SingleBlog";
 
 const Header = () => {
   const [username, setUsername] = useState("");
@@ -85,6 +86,10 @@ const App = () => {
         {
           path: "/",
           element: user === null ? null : <BlogView></BlogView>,
+        },
+        {
+          path: "/blogs/:id",
+          element: user === null ? null : <SingleBlog></SingleBlog>,
         },
         {
           path: "/users",
