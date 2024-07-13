@@ -4,7 +4,12 @@ import BlogView from "./components/BlogView";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, loginUser } from "./reducers/userReducer";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Link,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
 import Users from "./components/Users";
 import User from "./components/User";
 import SingleBlog from "./components/SingleBlog";
@@ -62,7 +67,11 @@ const Header = () => {
   } else {
     return (
       <div>
-        <p>{user.name} logged in!</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+          <Link to={"/users"}>users</Link>
+          <Link to={"/"}>blogs</Link>
+          <p>{user.name} logged in!</p>
+        </div>
         <button onClick={handleLogout}>Logout...</button>
         <Notification></Notification>
       </div>
