@@ -3,58 +3,47 @@ import blogService from "../services/blogs";
 import Notification from "./Notification";
 import PropTypes from "prop-types";
 
+import { useDispatch } from "react-redux";
+import { setNotification } from "../reducers/notificationReducer";
+
 const CreateView = (props) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const [showNotification, setShowNotification] = useState(false);
-  const [notifColor, setNotifColor] = useState("green");
-  const [notifMsg, setNotifMsg] = useState("");
-
   const [formVisible, setFormVisible] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleCreateBlog = async (e) => {
     e.preventDefault();
 
     try {
       props.addBlog({ title, author, url });
-
-      setNotifMsg(`New blog called ${title} made by ${author}`);
-      setNotifColor("green");
-      setShowNotification(true);
+      dispatch(
+        setNotification(`New blog called ${title} made by ${author}`, 3),
+      );
 
       setTitle("");
       setAuthor("");
       setUrl("");
     } catch (e) {
       console.log(e);
-      setNotifMsg("Error creating a new blog...");
-      setNotifColor("red");
-      setShowNotification(true);
+      dispatch(setNotification("Error creating a new blog...", 3));
     }
-
-    setTimeout(() => {
-      setNotifMsg("");
-      setShowNotification(false);
-    }, 3000);
   };
 
   if (!formVisible) {
     return (
       <div>
-        {showNotification === true && (
-          <Notification color={notifColor} message={notifMsg}></Notification>
-        )}
+        <Notification></Notification>
         <button onClick={() => setFormVisible(true)}>Create new blog</button>
       </div>
     );
   } else {
     return (
       <div>
-        {showNotification === true && (
-          <Notification color={notifColor} message={notifMsg}></Notification>
-        )}
+        <Notification></Notification>
         <h2>Create new blog</h2>
         <form
           onSubmit={(e) => {

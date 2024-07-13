@@ -1,24 +1,18 @@
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const Notification = (props) => {
-  return (
-    <div
-      style={{
-        margin: "0.5rem",
-        padding: "0.25rem",
-        borderRadius: "0.25rem",
-        border: "2px solid black",
-        backgroundColor: props.color,
-      }}
-    >
-      <h2 style={{ padding: 0, margin: 0 }}>{props.message}</h2>
-    </div>
-  );
-};
+const Notification = () => {
+  const notification = useSelector((state) => state.notification);
+  const style = {
+    border: "solid",
+    padding: 10,
+    borderWidth: 1,
+  };
 
-Notification.propTypes = {
-  color: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  if (notification.content === "") {
+    return <div></div>;
+  } else {
+    return <div style={style}>{notification.content}</div>;
+  }
 };
 
 export default Notification;

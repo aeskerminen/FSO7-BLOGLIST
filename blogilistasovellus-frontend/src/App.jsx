@@ -4,14 +4,15 @@ import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogView from "./components/BlogView";
 
+import { useDispatch } from "react-redux";
+import { setNotification } from "./reducers/notificationReducer";
+
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const [showNotification, setShowNotification] = useState(false);
-  const [notifColor, setNotifColor] = useState("green");
-  const [notifMsg, setNotifMsg] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadUser = window.localStorage.getItem("loggedInUser");
@@ -41,29 +42,16 @@ const App = () => {
       setUsername("");
       setPassword("");
 
-      setNotifMsg("Succesfully logged in!");
-      setNotifColor("green");
-      setShowNotification(true);
-
-      console.log(user);
+      dispatch(setNotification("Succesfully logged in!", 3));
     } catch (e) {
-      setNotifMsg("Login failed...");
-      setNotifColor("red");
-      setShowNotification(true);
+      dispatch(setNotification("Login failed...", 3));
     }
-
-    setTimeout(() => {
-      setNotifMsg("");
-      setShowNotification(false);
-    }, 3000);
   };
 
   if (user === null) {
     return (
       <div>
-        {showNotification === true && (
-          <Notification color={notifColor} message={notifMsg}></Notification>
-        )}
+        <Notification></Notification>
         <h2>Login to app</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -94,9 +82,7 @@ const App = () => {
 
   return (
     <div>
-      {showNotification === true && (
-        <Notification color={notifColor} message={notifMsg}></Notification>
-      )}
+      <Notification></Notification>
       <p>{user.name} logged in!</p>
       <button onClick={handleLogout}>Logout...</button>
       <BlogView></BlogView>
