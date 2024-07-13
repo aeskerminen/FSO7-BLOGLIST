@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import blogService from "../services/blogs";
 import PropTypes from "prop-types";
 
 const Blog = (props) => {

@@ -1,54 +1,31 @@
 import { useState, useEffect } from "react";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogView from "./components/BlogView";
 
-import { useDispatch } from "react-redux";
-import { setNotification } from "./reducers/notificationReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, loginUser } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const loadUser = window.localStorage.getItem("loggedInUser");
-    if (loadUser) {
-      const user = JSON.parse(loadUser);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
+  const user = useSelector((state) => state.users);
 
   const handleLogout = () => {
-    window.localStorage.removeItem("loggedInUser");
-    setUser(null);
+    dispatch(logoutUser());
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    try {
-      const user = await loginService.login({ username, password });
+    dispatch(loginUser(username, password));
 
-      window.localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-      setUser(user);
-      blogService.setToken(user.token);
-
-      setUsername("");
-      setPassword("");
-
-      dispatch(setNotification("Succesfully logged in!", 3));
-    } catch (e) {
-      dispatch(setNotification("Login failed...", 3));
-    }
+    setUsername("");
+    setPassword("");
   };
 
-  if (user === null) {
+  if (user === undefined || user === null) {
     return (
       <div>
         <Notification></Notification>
