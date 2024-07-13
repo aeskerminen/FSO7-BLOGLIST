@@ -2,35 +2,25 @@ import { useEffect, useState } from "react";
 import Blog from "./Blog";
 import CreateView from "./CreateView";
 import blogService from "../services/blogs";
+import blogReducer, { initializeBlogs, addBlog } from "../reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const BlogView = () => {
-  const [blogs, setBlogs] = useState([]);
   const currentUser = JSON.parse(
     window.localStorage.getItem("loggedInUser"),
   ).username;
 
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
+
   const blogSorterFunction = (a, b) => a.likes < b.likes;
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      blogs.sort(blogSorterFunction);
-      setBlogs(blogs);
-    });
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   const handleAddBlog = async ({ title, author, url }) => {
-    const curUser = JSON.parse(window.localStorage.getItem("loggedInUser"));
-    const newBlog = await blogService.createBlog({ title, author, url });
-
-    const blog = {
-      likes: 0,
-      id: newBlog.id,
-      author: newBlog.author,
-      title: newBlog.title,
-      url: newBlog.url,
-      user: { username: curUser.username, name: curUser.name },
-    };
-    setBlogs([...blogs, blog]);
+    dispatch(addBlog({ title, author, url }));
   };
 
   const handleDeleteBlog = async (id) => {

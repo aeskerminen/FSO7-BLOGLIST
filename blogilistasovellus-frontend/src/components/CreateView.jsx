@@ -36,14 +36,12 @@ const CreateView = (props) => {
   if (!formVisible) {
     return (
       <div>
-        <Notification></Notification>
         <button onClick={() => setFormVisible(true)}>Create new blog</button>
       </div>
     );
   } else {
     return (
       <div>
-        <Notification></Notification>
         <h2>Create new blog</h2>
         <form
           onSubmit={(e) => {
