@@ -36,13 +36,14 @@ const Header = () => {
 
   if (user === undefined || user === null) {
     return (
-      <div>
+      <div className="flex flex-col items-center justify-center gap-2">
         <Notification></Notification>
-        <h2>Login to app</h2>
-        <form onSubmit={handleLogin}>
+        <h2 className="p-2 text-2xl">Login to app</h2>
+        <form className="p-2 bg-slate-500 rounded text-white flex flex-col justify-center gap-2" onSubmit={handleLogin}>
           <div>
-            username
+            Username
             <input
+              className="p-2 rounded-lg grow flex text-black"
               data-testid="username"
               type="text"
               value={username}
@@ -51,8 +52,9 @@ const Header = () => {
             />
           </div>
           <div>
-            password
+            Password
             <input
+              className="p-2 rounded-lg grow flex text-black"
               data-testid="password"
               type="password"
               value={password}
@@ -60,19 +62,20 @@ const Header = () => {
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">login</button>
+          <button className="p-1 pl-4 pr-4 rounded-full bg-white hover:bg-slate-200 active:bg-slate-300 self-center text-black" type="submit">Login</button>
         </form>
       </div>
     );
   } else {
     return (
-      <div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <Link to={"/users"}>users</Link>
-          <Link to={"/"}>blogs</Link>
-          <p>{user.name} logged in!</p>
+      <div className="flex flex-col justify-center items-center">
+        <div className="flex items-center gap-2 p-2 w-full bg-slate-200">
+          <Link className="text-xl underline" to={"/users"}>Users</Link>
+          <Link className="text-xl underline" to={"/"}>Blogs</Link>
         </div>
-        <button onClick={handleLogout}>Logout...</button>
+        <p className="p-2 text-2xl" >{user.name} Logged in!</p>
+
+        <button className="p-1 pl-4 pr-4 rounded-full bg-slate-50 hover:bg-slate-200 active:bg-slate-300 self-center text-black" onClick={handleLogout}>Logout...</button>
         <Notification></Notification>
       </div>
     );

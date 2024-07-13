@@ -34,10 +34,10 @@ const BlogView = () => {
   };
 
   return (
-    <div>
+    <div className="p-2 flex flex-col items-center mt-10 h-full">
       <CreateView addBlog={handleAddBlog}></CreateView>
-      <h2>blogs</h2>
-      <div data-testid="blogContainer">
+      <h2 className="p-2 m-2 text-3xl">Blogs</h2>
+      <div data-testid="blogContainer" className="p-2 bg-gray-200 w-full">
         {blogs.map((blog, i) => (
           <Blog
             likeBlog={handleLikeBlog}
