@@ -5,6 +5,7 @@ import BlogView from "./components/BlogView";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, loginUser } from "./reducers/userReducer";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import Users from "./components/Users";
 
 const Header = () => {
   const [username, setUsername] = useState("");
@@ -84,6 +85,10 @@ const App = () => {
           path: "/",
           element: user === null ? null : <BlogView></BlogView>,
         },
+        {
+          path: "/users",
+          element: <Users></Users>
+        }
       ],
     },
   ]);
