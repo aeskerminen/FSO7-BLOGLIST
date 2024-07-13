@@ -16,19 +16,11 @@ const CreateView = (props) => {
   const handleCreateBlog = async (e) => {
     e.preventDefault();
 
-    try {
-      props.addBlog({ title, author, url });
-      dispatch(
-        setNotification(`New blog called ${title} made by ${author}`, 3),
-      );
+    props.addBlog({ title, author, url });
 
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-    } catch (e) {
-      console.log(e);
-      dispatch(setNotification("Error creating a new blog...", 3));
-    }
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   };
 
   if (!formVisible) {

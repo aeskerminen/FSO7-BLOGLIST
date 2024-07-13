@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogService from "../services/blogs";
+import { setNotification } from "./notificationReducer";
 
 const blogReducer = createSlice({
   name: "blog",
@@ -42,19 +43,29 @@ export const initializeBlogs = (blogs) => {
 
 export const addBlog = ({ title, author, url }) => {
   return async (dispatch) => {
-    const curUser = JSON.parse(window.localStorage.getItem("loggedInUser"));
-    const newBlog = await blogService.createBlog({ title, author, url });
+    try {
+      const curUser = JSON.parse(window.localStorage.getItem("loggedInUser"));
+      const newBlog = await blogService.createBlog({ title, author, url });
 
-    const blog = {
-      likes: 0,
-      id: newBlog.id,
-      author: newBlog.author,
-      title: newBlog.title,
-      url: newBlog.url,
-      user: { username: curUser.username, name: curUser.name },
-    };
+      const blog = {
+        likes: 0,
+        id: newBlog.id,
+        author: newBlog.author,
+        title: newBlog.title,
+        url: newBlog.url,
+        user: { username: curUser.username, name: curUser.name },
+      };
 
-    dispatch(add(blog));
+      dispatch(add(blog));
+      dispatch(
+        setNotification(
+          `New blog called ${newBlog.title} made by ${newBlog.author}`,
+          3,
+        ),
+      );
+    } catch {
+      dispatch(setNotification("Error creating a new blog...", 3));
+    }
   };
 };
 

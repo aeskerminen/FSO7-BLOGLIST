@@ -5,10 +5,17 @@ import notificationReducer, { setNotification } from "./notificationReducer";
 
 const blogReducer = createSlice({
   name: "user",
-  initialState: JSON.parse(window.localStorage.getItem("loggedInUser")),
+  initialState: () => {
+    const u = JSON.parse(window.localStorage.getItem("loggedInUser"));
+    blogService.setToken(u.token);
+    return u;
+  },
   reducers: {
     login(state, action) {
-      window.localStorage.setItem("loggedInUser", JSON.stringify(action.payload));
+      window.localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify(action.payload),
+      );
       blogService.setToken(action.payload.token);
       return { ...action.payload };
     },

@@ -4,8 +4,9 @@ import BlogView from "./components/BlogView";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, loginUser } from "./reducers/userReducer";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
-const App = () => {
+const Header = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -55,16 +56,39 @@ const App = () => {
         </form>
       </div>
     );
+  } else {
+    return (
+      <div>
+        <p>{user.name} logged in!</p>
+        <button onClick={handleLogout}>Logout...</button>
+        <Notification></Notification>
+      </div>
+    );
   }
+};
 
-  return (
-    <div>
-      <Notification></Notification>
-      <p>{user.name} logged in!</p>
-      <button onClick={handleLogout}>Logout...</button>
-      <BlogView></BlogView>
-    </div>
-  );
+const App = () => {
+  const user = useSelector((state) => state.users);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <div>
+          <Header></Header>
+          <Outlet></Outlet>
+        </div>
+      ),
+      children: [
+        {
+          path: "/",
+          element: user === null ? null : <BlogView></BlogView>,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router}></RouterProvider>;
 };
 
 export default App;
